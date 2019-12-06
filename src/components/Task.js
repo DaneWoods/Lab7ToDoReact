@@ -11,9 +11,10 @@ class Task extends Component{
     }
 
     onDeleteTask(event){
-        event.preventDefault();
-        const {deleteTask, index} = this.props;
-        deleteTask(index);
+      event.preventDefault();
+      const {deleteTask, index} = this.props;
+      console.log(index + "Task");
+      deleteTask(index);
     }
 
     onToggleTaskStatus(){

@@ -1,17 +1,17 @@
 import React from 'react';
 import TaskList from './TaskList.js';
+import TaskForm from './TaskForm.js';
 import './App.css';
 
 class App extends React.Component{
   constructor(props){
     super(props);
+    let tasks = [];
+    if(localStorage.getItem("TASKS") && localStorage.getItem("TASKS" != null))
+      tasks = JSON.parse(localStorage.getItem("TASKS"));
     this.state = {
-      tasks: 
-        [
-            {task: 'Go to Dentist', isComplete: false},
-            {task: 'Do Gardening', isComplete: true},
-            {task: 'Renew Library Account', isComplete: false},
-        ]
+      tasks: tasks,
+      task: ''
     }
     this.toggleTaskStatus = this.toggleTaskStatus.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
@@ -25,35 +25,28 @@ class App extends React.Component{
     this.setState({tasks});
   }
 
-  deleteTask(event, index){
+  deleteTask(index){
     let tasks = JSON.parse(JSON.stringify(this.state.tasks));
+    console.log(index);
     tasks.splice(index, 1);
     this.setState({tasks});
   }
 
-  addTaskClick(){
-    console.log("addtaskclick");
-    /*let addTB = document.getElementById("addTask");
-    const text = addTB.value;
-    if(text == "")
-    {
-      addTB.parentElement.classList.add("has-error");
-    }
-    else{
-      addTB.parentElement.classList.remove("has-error");
-      let newTask = {
-        task: text,
-        isComplete: false
-      }
-      this.tasks.push(newTask);
-      this.loadTasks();
-      addTB.value = "";
-    }*/
+  addTaskClick(task){
+    let newTask = {
+      task: task,
+      isComplete: false
+    };
+    let tasks = JSON.parse(JSON.stringify(this.state.tasks));
+    tasks.push(newTask);
+    this.setState({tasks});
   }
 
   render (){
+    localStorage.setItem("TASKS", JSON.stringify(this.state.tasks));
     return (
       <div>This is the ToDo React App
+        <TaskForm onSubmit={this.addTaskClick}/>
         <TaskList tasks={this.state.tasks}
           toggleTaskStatus={this.toggleTaskStatus} deleteTask={this.deleteTask}/>
       </div>
